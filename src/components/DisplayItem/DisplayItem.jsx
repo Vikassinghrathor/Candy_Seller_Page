@@ -1,3 +1,4 @@
+
 // DisplayItem.js
 import React, { useContext } from 'react';
 import CartContext from '../../store/Cart-Context';
@@ -5,27 +6,11 @@ import CartContext from '../../store/Cart-Context';
 const DisplayItem = ({ product, onPurchase }) => {
   const { addItem } = useContext(CartContext);
 
-  const purchaseHandler = (size) => {
-    let packSizeMultiplier;
-
-    switch (size) {
-      case 'small':
-        packSizeMultiplier = 20;
-        break;
-      case 'medium':
-        packSizeMultiplier = 50;
-        break;
-      case 'large':
-        packSizeMultiplier = 100;
-        break;
-      default:
-        packSizeMultiplier = 1;
-    }
-
+  const purchaseHandler = (size, packSizeMultiplier) => {
     addItem({
       ...product,
       selectedSize: size,
-      price: Number(product.price),
+      price: Number(product.price) * packSizeMultiplier,
     });
 
     onPurchase(product.id, size, packSizeMultiplier);
@@ -38,14 +23,16 @@ const DisplayItem = ({ product, onPurchase }) => {
       <p>Price: ${Number(product.price).toFixed(2)}</p>
 
       {/* Buttons to dynamically select pack sizes */}
-      <button onClick={() => purchaseHandler('small')}>Buy Pack of 20</button>
-      <button onClick={() => purchaseHandler('medium')}>Buy Pack of 50</button>
-      <button onClick={() => purchaseHandler('large')}>Buy Pack of 100</button>
+      <button onClick={() => purchaseHandler('small', 20)}>Buy Pack of 20</button>
+      <button onClick={() => purchaseHandler('medium', 50)}>Buy Pack of 50</button>
+      <button onClick={() => purchaseHandler('large', 100)}>Buy Pack of 100</button>
 
       {/* Button to make the purchase */}
-      <button onClick={() => purchaseHandler('now')}>Buy Now</button>
+      <button onClick={() => purchaseHandler('now', 1)}>Buy Now</button>
     </div>
   );
 };
 
 export default DisplayItem;
+
+// The rest of the components and context remain unchanged.

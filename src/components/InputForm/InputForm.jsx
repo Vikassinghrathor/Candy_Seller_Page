@@ -63,4 +63,3 @@ const Input = ({ onAddProduct }) => {
 };
 
 export default Input;
-
